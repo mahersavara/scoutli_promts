@@ -9,14 +9,19 @@ The project is a microservices application for Scoutli, built on AWS EKS with Qu
 ## Instructions for AI:
 
 1.  **Read Spec Document:** Thoroughly read and understand the entire project specification document.
-2.  **Summarize Key Components:** Identify and summarize the current state of:
+2.  **Generate Hierarchy Tree:** Create a visual hierarchical tree structure (using ASCII or Markdown list) representing the project's components, infrastructure, and their relationships (e.g., Cluster -> Nodes, Ingress -> Services). This helps in visualizing the system architecture.
+3.  **Generate File System Overview:** Provide a detailed hierarchy of the project's key directories and files. For each file, explain its specific function and role within the system logic.
+    *   **Source Code:** Explain what entities represent, what services handle, and what resources expose.
+    *   **Configuration:** Explain what specific properties or settings a file controls.
+    *   **Infrastructure:** Explain what resource a Terraform file or Kubernetes manifest creates.
+4.  **Summarize Key Components:** Identify and summarize the current state of:
     *   **Infrastructure:** Overview of AWS resources provisioned (VPC, EKS cluster details, RDS setup, ECR repositories).
     *   **Platform Software:** Current versions and configurations of NGINX Ingress Controller, Cert-Manager, ArgoCD.
     *   **Application Deployment:** Status of deployed applications (e.g., Frontend accessibility, ArgoCD accessibility).
     *   **Core Architectural Decisions:** Highlight significant technical choices made (e.g., End-to-End HTTPS, GitOps model).
-3.  **Identify Current State:** Clearly state what is currently working and accessible.
-4.  **Identify Known Issues/Outstanding Tasks:** List any known problems or immediate next steps (e.g., specific microservice development, pending configurations).
-5.  **Conciseness:** Provide a high-level summary suitable for a quick briefing, without unnecessary technical jargon where simpler terms suffice. Focus on understanding the "situation" of the project.
+5.  **Identify Current State:** Clearly state what is currently working and accessible.
+6.  **Identify Known Issues/Outstanding Tasks:** List any known problems or immediate next steps (e.g., specific microservice development, pending configurations).
+7.  **Conciseness:** Provide a high-level summary suitable for a quick briefing, without unnecessary technical jargon where simpler terms suffice. Focus on understanding the "situation" of the project.
 
 ## Example Input (Partial):
 
@@ -45,6 +50,41 @@ The project is a microservices application for Scoutli, built on AWS EKS with Qu
 ## Desired Output (Partial):
 
 ```markdown
+**Project Hierarchy:**
+- AWS Cloud (ap-southeast-1)
+  - VPC
+    - EKS Cluster (scoutli-cluster)
+      - Nodes (5x t3.small)
+      - NGINX Ingress Controller
+        - Load Balancer (NLB)
+        - Ingress Rules
+          - www.journeywriter.space -> Frontend Service
+          - argocd.journeywriter.space -> ArgoCD Service
+      - ArgoCD (ClusterIP)
+      - Cert-Manager (Let's Encrypt)
+  - RDS (PostgreSQL 16.6)
+  - ECR (Container Registry)
+
+**File System Overview:**
+- microservices/
+  - scoutli-auth-service/                  # Auth Microservice (Java/Quarkus) - Manages authentication & users
+    - src/main/java/com/scoutli/auth/
+      - entity/User.java                   # JPA Entity representing the 'users' table. Defines fields like id, email, password, roles. Maps database rows to Java objects.
+      - dto/AuthRequest.java               # Data Transfer Object for login/register requests. Carries 'email', 'password', 'fullName' from the client to the resource.
+      - service/TokenService.java          # Service responsible for business logic related to tokens. Generates signed JWTs using SmallRye JWT upon successful login.
+      - resource/AuthResource.java         # REST Controller exposing endpoints (/api/auth/login, /api/auth/register). Handles HTTP requests and invokes TokenService.
+    - src/main/resources/
+      - application.properties             # Main Quarkus config file. Configures DB connection (JDBC URL), HTTP port (8080), and Flyway migration settings.
+      - db/migration/V1.0.0__Create_User_Table.sql # SQL script executed by Flyway on startup. Creates the initial 'users' table schema in the PostgreSQL database.
+    - pom.xml                              # Maven project file. Declares dependencies like 'quarkus-hibernate-orm-panache', 'quarkus-jdbc-postgresql', 'quarkus-smallrye-jwt'.
+  - scoutli-gitops/                        # GitOps repository. Defines the desired state of the cluster.
+    - apps/
+      - ingress-argocd.yaml                # Kubernetes Ingress resource. Routes traffic for 'argocd.journeywriter.space' to the internal ArgoCD service. Configures TLS and SSL redirection.
+      - ingress-frontend.yaml              # Kubernetes Ingress resource. Routes traffic for 'www.journeywriter.space' to the Frontend service. Configures TLS certificate request.
+    - bootstrap/
+      - cluster-issuer.yaml                # Cert-Manager ClusterIssuer. Configures Let's Encrypt (Production) as the certificate authority for issuing SSL certificates.
+      - root-app.yaml                      # "App of Apps" pattern. ArgoCD Application that points to the 'apps/' folder, automating the deployment of all other applications.
+
 **Project Situation Summary:**
 
 The Scoutli project infrastructure is provisioned on AWS EKS (v1.34) with 5 t3.small nodes in ap-southeast-1, including PostgreSQL RDS. ArgoCD is deployed and accessible at https://argocd.journeywriter.space, though a minor mixed content warning is noted. The Frontend is live at https://www.journeywriter.space.
