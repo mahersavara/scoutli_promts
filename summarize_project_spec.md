@@ -10,7 +10,8 @@ The project is a microservices application for Scoutli, built on AWS EKS with Qu
 
 1.  **Read Spec Document:** Thoroughly read and understand the entire project specification document.
 2.  **Generate Hierarchy Tree:** Create a visual hierarchical tree structure (using ASCII or Markdown list) representing the project's components, infrastructure, and their relationships (e.g., Cluster -> Nodes, Ingress -> Services). This helps in visualizing the system architecture.
-3.  **Generate File System Overview:** Provide a detailed hierarchy of the project's key directories and files. For each file, explain its specific function and role within the system logic.
+3.  **Generate Full File System Overview:** Provide a **complete and detailed list of ALL files** currently existing in the project structure. For each file, explain its **precise function, purpose, and role** within the project.
+    *   **List EVERY file:** Do not omit files. If a directory has many files, list them all unless they are standard gitignored artifacts (like `target/`, `node_modules/`, `.terraform/`).
     *   **Source Code:** Explain what entities represent, what services handle, and what resources expose.
     *   **Configuration:** Explain what specific properties or settings a file controls.
     *   **Infrastructure:** Explain what resource a Terraform file or Kubernetes manifest creates.
@@ -68,6 +69,16 @@ The project is a microservices application for Scoutli, built on AWS EKS with Qu
 **File System Overview:**
 - microservices/
   - scoutli-auth-service/                  # Auth Microservice (Java/Quarkus) - Manages authentication & users
+    - .gitignore                           # Git ignore file
+    - mvnw                                 # Maven wrapper script (Linux/Mac)
+    - mvnw.cmd                             # Maven wrapper script (Windows)
+    - pom.xml                              # Maven project file. Declares dependencies like 'quarkus-hibernate-orm-panache', 'quarkus-jdbc-postgresql', 'quarkus-smallrye-jwt'.
+    - README.md                            # Project documentation
+    - src/main/docker/
+      - Dockerfile.jvm                     # Dockerfile for JVM build
+      - Dockerfile.legacy-jar              # Dockerfile for legacy jar build
+      - Dockerfile.native                  # Dockerfile for native image build
+      - Dockerfile.native-micro            # Dockerfile for micro native image
     - src/main/java/com/scoutli/auth/
       - entity/User.java                   # JPA Entity representing the 'users' table. Defines fields like id, email, password, roles. Maps database rows to Java objects.
       - dto/AuthRequest.java               # Data Transfer Object for login/register requests. Carries 'email', 'password', 'fullName' from the client to the resource.
@@ -76,7 +87,6 @@ The project is a microservices application for Scoutli, built on AWS EKS with Qu
     - src/main/resources/
       - application.properties             # Main Quarkus config file. Configures DB connection (JDBC URL), HTTP port (8080), and Flyway migration settings.
       - db/migration/V1.0.0__Create_User_Table.sql # SQL script executed by Flyway on startup. Creates the initial 'users' table schema in the PostgreSQL database.
-    - pom.xml                              # Maven project file. Declares dependencies like 'quarkus-hibernate-orm-panache', 'quarkus-jdbc-postgresql', 'quarkus-smallrye-jwt'.
   - scoutli-gitops/                        # GitOps repository. Defines the desired state of the cluster.
     - apps/
       - ingress-argocd.yaml                # Kubernetes Ingress resource. Routes traffic for 'argocd.journeywriter.space' to the internal ArgoCD service. Configures TLS and SSL redirection.
