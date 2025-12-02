@@ -1,7 +1,7 @@
 # Prompt: Summarize Project Specification for Current Situation
 
 ## Goal:
-Provide a concise and comprehensive summary of the project's current status, architecture, deployed components, and immediate next steps based on the provided technical specification document.
+Provide a concise and comprehensive summary of the project's current status, architecture, deployed components, and immediate next steps based on the provided technical specification document or current project state.
 
 ## Context:
 The project is a microservices application for Scoutli, built on AWS EKS with Quarkus, Angular, Terraform, GitHub Actions, and ArgoCD. The provided document ("Spec") contains the up-to-date technical details.
