@@ -57,5 +57,6 @@ AI: certs READY: True.
 - Configured cert-manager (v1.16.0) in 'cert-manager' namespace.
 - Created 'letsencrypt-prod' ClusterIssuer.
 - Ingress resources for ArgoCD and Frontend updated to request TLS certificates from 'letsencrypt-prod'.
-- Certificates for argocd.journeywriter.space and www.journeywriter.space successfully issued by Let's Encrypt.
+- Certificates for argocd.journeywriter.click and www.journeywriter.click successfully issued by Let's Encrypt.
 ```
+

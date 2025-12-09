@@ -37,10 +37,10 @@ The project is a microservices application for Scoutli, built on AWS EKS with Qu
 
 # Deployment
 ## ArgoCD
-- Accessible at https://argocd.journeywriter.space.
+- Accessible at https://argocd.journeywriter.click.
 - Minor mixed content warning persists in Edge/Mobile browsers.
 ## Frontend
-- Accessible at https://www.journeywriter.space.
+- Accessible at https://www.journeywriter.click.
 
 # Backend Microservices
 ## scoutli-auth-service
@@ -59,8 +59,8 @@ The project is a microservices application for Scoutli, built on AWS EKS with Qu
       - NGINX Ingress Controller
         - Load Balancer (NLB)
         - Ingress Rules
-          - www.journeywriter.space -> Frontend Service
-          - argocd.journeywriter.space -> ArgoCD Service
+          - www.journeywriter.click -> Frontend Service
+          - argocd.journeywriter.click -> ArgoCD Service
       - ArgoCD (ClusterIP)
       - Cert-Manager (Let's Encrypt)
   - RDS (PostgreSQL 16.6)
@@ -89,17 +89,18 @@ The project is a microservices application for Scoutli, built on AWS EKS with Qu
       - db/migration/V1.0.0__Create_User_Table.sql # SQL script executed by Flyway on startup. Creates the initial 'users' table schema in the PostgreSQL database.
   - scoutli-gitops/                        # GitOps repository. Defines the desired state of the cluster.
     - apps/
-      - ingress-argocd.yaml                # Kubernetes Ingress resource. Routes traffic for 'argocd.journeywriter.space' to the internal ArgoCD service. Configures TLS and SSL redirection.
-      - ingress-frontend.yaml              # Kubernetes Ingress resource. Routes traffic for 'www.journeywriter.space' to the Frontend service. Configures TLS certificate request.
+      - ingress-argocd.yaml                # Kubernetes Ingress resource. Routes traffic for 'argocd.journeywriter.click' to the internal ArgoCD service. Configures TLS and SSL redirection.
+      - ingress-frontend.yaml              # Kubernetes Ingress resource. Routes traffic for 'www.journeywriter.click' to the Frontend service. Configures TLS certificate request.
     - bootstrap/
       - cluster-issuer.yaml                # Cert-Manager ClusterIssuer. Configures Let's Encrypt (Production) as the certificate authority for issuing SSL certificates.
       - root-app.yaml                      # "App of Apps" pattern. ArgoCD Application that points to the 'apps/' folder, automating the deployment of all other applications.
 
 **Project Situation Summary:**
 
-The Scoutli project infrastructure is provisioned on AWS EKS (v1.34) with 5 t3.small nodes in ap-southeast-1, including PostgreSQL RDS. ArgoCD is deployed and accessible at https://argocd.journeywriter.space, though a minor mixed content warning is noted. The Frontend is live at https://www.journeywriter.space.
+The Scoutli project infrastructure is provisioned on AWS EKS (v1.34) with 5 t3.small nodes in ap-southeast-1, including PostgreSQL RDS. ArgoCD is deployed and accessible at https://argocd.journeywriter.click, though a minor mixed content warning is noted. The Frontend is live at https://www.journeywriter.click.
 
 **Next Steps:**
 - Build and deploy `scoutli-auth-service` to Kubernetes.
 - Implement `scoutli-discovery-service` and `scoutli-interaction-service`.
 ```
+
